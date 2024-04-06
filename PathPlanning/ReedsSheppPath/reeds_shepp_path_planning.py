@@ -7,9 +7,13 @@ co-author Videh Patel(@videh25) : Added the missing RS paths
 
 """
 import math
+import sys
+import pathlib
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+sys.path.append(str(pathlib.Path(__file__).parent.parent.parent))
 from utils.angle import angle_mod
 
 show_animation = True
