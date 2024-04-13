@@ -18,6 +18,7 @@ sys.path.append(str(pathlib.Path(__file__).parent.parent))
 from dynamic_programming_heuristic import calc_distance_heuristic
 from ReedsSheppPath import reeds_shepp_path_planning as rs
 from car import move, check_car_collision, MAX_STEER, WB, plot_car, BUBBLE_R
+from environment import RasterEnv
 
 XY_GRID_RESOLUTION = 2.0  # [m]
 YAW_GRID_RESOLUTION = np.deg2rad(15.0)  # [rad]
@@ -379,27 +380,29 @@ def calc_index(node, c):
 
 def main():
     print("Start Hybrid A* planning")
+    env = RasterEnv()
+    env.getTrackFromImage('mrn_bin.png')
+    
+    (ox, oy) = env.getObstacleXYArrays()
 
-    ox, oy = [], []
-
-    for i in range(60):
-        ox.append(i)
-        oy.append(0.0)
-    for i in range(60):
-        ox.append(60.0)
-        oy.append(i)
-    for i in range(61):
-        ox.append(i)
-        oy.append(60.0)
-    for i in range(61):
-        ox.append(0.0)
-        oy.append(i)
-    for i in range(40):
-        ox.append(20.0)
-        oy.append(i)
-    for i in range(40):
-        ox.append(40.0)
-        oy.append(60.0 - i)
+    # for i in range(60):
+    #     ox.append(i)
+    #     oy.append(0.0)
+    # for i in range(60):
+    #     ox.append(60.0)
+    #     oy.append(i)
+    # for i in range(61):
+    #     ox.append(i)
+    #     oy.append(60.0)
+    # for i in range(61):
+    #     ox.append(0.0)
+    #     oy.append(i)
+    # for i in range(40):
+    #     ox.append(20.0)
+    #     oy.append(i)
+    # for i in range(40):
+    #     ox.append(40.0)
+    #     oy.append(60.0 - i)
 
     # Set Initial parameters
     start = [10.0, 10.0, np.deg2rad(90.0)]
@@ -415,23 +418,24 @@ def main():
 
         plt.grid(True)
         plt.axis("equal")
+        plt.show()
 
-    path = hybrid_a_star_planning(
-        start, goal, ox, oy, XY_GRID_RESOLUTION, YAW_GRID_RESOLUTION)
+    # path = hybrid_a_star_planning(
+    #     start, goal, ox, oy, XY_GRID_RESOLUTION, YAW_GRID_RESOLUTION)
 
-    x = path.x_list
-    y = path.y_list
-    yaw = path.yaw_list
+    # x = path.x_list
+    # y = path.y_list
+    # yaw = path.yaw_list
 
-    if show_animation:
-        for i_x, i_y, i_yaw in zip(x, y, yaw):
-            plt.cla()
-            plt.plot(ox, oy, ".k")
-            plt.plot(x, y, "-r", label="Hybrid A* path")
-            plt.grid(True)
-            plt.axis("equal")
-            plot_car(i_x, i_y, i_yaw)
-            plt.pause(0.0001)
+    # if show_animation:
+    #     for i_x, i_y, i_yaw in zip(x, y, yaw):
+    #         plt.cla()
+    #         plt.plot(ox, oy, ".k")
+    #         plt.plot(x, y, "-r", label="Hybrid A* path")
+    #         plt.grid(True)
+    #         plt.axis("equal")
+    #         plot_car(i_x, i_y, i_yaw)
+    #         plt.pause(0.0001)
 
     print(__file__ + " done!!")
 
